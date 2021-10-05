@@ -13,7 +13,10 @@ import { colors, fonts } from '../../styles';
 
 import { RadioGroup, GridRow } from '../../components';
 
+
 export default class GridsScreen extends React.Component {
+
+
   _getRenderItemFunction = () =>
     [this.renderRowOne, this.renderRowTwo, this.renderRowThree][
       this.props.tabIndex
@@ -54,6 +57,12 @@ export default class GridsScreen extends React.Component {
     return (
       <View key={rowData.item[0].id} style={styles.itemOneRow}>
         {cellViews}
+          <FlatList
+                     data={data}
+//                     console.log(data)
+                     renderItem={({item}) => <TodoItem item={item} isPublic={isPublic}/>}
+                     keyExtractor={(item) => item.id.toString()}
+                   />
       </View>
     );
   };
