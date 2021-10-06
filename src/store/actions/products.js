@@ -1,6 +1,7 @@
 export const TOGGLE_GREEN = 'TOGGLE_GREEN';
 export const TOGGLE_GREY = 'TOGGLE_GREY';
 export const ADD_VALUE_TO_STORE = 'ADD_VALUE_TO_STORE';
+export const ADD_TO_CART = 'ADD';
 
 export const RESET_CART = 'RESET';
 
@@ -35,3 +36,11 @@ export const addValueToStore = (id, value) => {
         value: value, 
     };
 };
+
+// export const addToCart = (id) => {
+//         console.log("dispatcher called add order to o_cart !!!");
+//         return { 
+//             type: ADD_TO_CART, 
+//             order: Order,
+//         };
+//     };

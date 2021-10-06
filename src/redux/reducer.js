@@ -5,6 +5,7 @@ import gallery from '../modules/gallery/GalleryState';
 import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import products from '../store/reducers/products';
+import customers from '../store/reducers/customers'
 export default combineReducers({
   // ## Generator Reducers
   gallery,

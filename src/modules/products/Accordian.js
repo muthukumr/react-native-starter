@@ -82,9 +82,11 @@ export default class Accordian extends Component{
                         <View>
                             <TouchableOpacity style={[styles.childRow, styles.button, item.value ? styles.btnActive : styles.btnInActive]} >
                             {/* <TouchableOpacity style={[styles.childRow, styles.button, item.value ? styles.btnActive : styles.btnInActive]} onPress={()=>this.onClick(index)}> */}
-                                <Text style={[styles.font, styles.itemInActive]} >{"Item Code:"} {item.item_code}{"\n"}{item.product_name}{"\t"}{"\t"}{item.type}</Text>
+                                <Text key = {item.id} style={[styles.font, styles.itemInActive]} >{"Item Code:"} {item.item_code}{"\n"}{item.product_name}{"\t"}{"\t"}{item.type}</Text>
                                 <NumInput id = {item.id} />            
-                                <CheckCircle key={item.id}  checked={false} addOrderItem={()=>this.addOrderItemEventHandler(item.id, 10 , item.unit_price)} />
+                                <CheckCircle id = {item.id} code = {item.item_code} name = {item.product_name} type = {item.type} unit_price = {item.unit_price}
+                                checked={false} 
+                                addOrderItem={()=>this.addOrderItemEventHandler(item.id, 10 , item.unit_price)} />
                             </TouchableOpacity>
                             <View style={styles.childHr}/>
                         </View>
