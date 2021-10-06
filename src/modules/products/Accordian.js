@@ -4,24 +4,16 @@ import { Colors } from './Colors';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import NumericInput,{ calcSize } from 'react-native-numeric-input';
 import CheckCircle from './CheckCircle';
-// import NumInput from './NumInput';
+import NumInput from './NumInput';
 
 import { useSelector, useDispatch } from 'react-redux';
 import TOGGLE_GREEN from '../../store/actions/products';
 import { toggleGreen } from '../../store/actions/products';
 import { connect } from 'react-redux'
+import Product from '../../models/product';
 
 var selectedItems = [];
 var quantity = 0;
-// const dispatch = useDispatch();
-
-// const mapDispatchToProps = dispatch => ({
-//  toggleGreen: productId => {
-//  	dispatch(toggleGreen(productId));
-//  }
-// });
-
-// export default connect(null, mapDispatchToProps)Accordian);
 
 export default class Accordian extends Component{
     
@@ -33,8 +25,6 @@ export default class Accordian extends Component{
           expanded : false,
           checked: true,
           temp_val: 0,
-        //   cart: useSelector(state => this.state.products.cart),
-        //   dispatch: useDispatch(), 
         }
 
 //        if (Platform.OS === 'android') {
@@ -42,14 +32,9 @@ export default class Accordian extends Component{
 //        }
     };
 
-    // handleClick(o) {
-    //     console.log("handle click function called")
-    //     console.log(o);
-    //     selectedItems.push(o);
-    //     console.log(selectedItems);      
-    // }
 
-    // connect()(products);
+
+
   addToCartHandler = (productId) => {
       console.log("In add to cart handler function")
       toggleGreen(productId);
@@ -66,18 +51,14 @@ export default class Accordian extends Component{
 
   addOrderItemEventHandler(item_code, quantity, amount){
         console.log("add Order Item Event Handler called")
-        console.log(item, quantity, amount);
-        item = {}
-        item["code"] = item_code
-        item["quantity"] = quantity
-        item["amount"] = amount
+        item = new Product(item_code, quantity, amount)      
         console.log(item)
-        const cart = useSelector(state => state.products.cart)
-        const isToBeAdded = cart.some(product => product.id === item_code);
+        // const cart = useSelector(state => state.products.cart)
+        // const isToBeAdded = cart.some(product => product.id === item_code);
 
-        newArray = [...selectedItems.filter()]
-        selectedItems.push(item);
-        console.log(selectedItems);    
+        // newArray = [...selectedItems.filter()]
+        // selectedItems.push(item);
+        // console.log(selectedItems);    
   }
 
   render() {
@@ -93,7 +74,7 @@ export default class Accordian extends Component{
                 this.state.expanded &&
                 <View style={{}} key = "{props.title}">
                     <FlatList
-                    key = "{item.key}"
+                    key = {item.data.id}
                     data={this.state.data}
                     numColumns={1}
                     scrollEnabled={false}
@@ -102,29 +83,8 @@ export default class Accordian extends Component{
                             <TouchableOpacity style={[styles.childRow, styles.button, item.value ? styles.btnActive : styles.btnInActive]} >
                             {/* <TouchableOpacity style={[styles.childRow, styles.button, item.value ? styles.btnActive : styles.btnInActive]} onPress={()=>this.onClick(index)}> */}
                                 <Text style={[styles.font, styles.itemInActive]} >{"Item Code:"} {item.item_code}{"\n"}{item.product_name}{"\t"}{"\t"}{item.type}</Text>
-                                <NumericInput key={item.item_code} 
-                                            value={this.state.value}
-                                            onChange={value => { this.setState({value}); quantity = value; console.log("value is ", quantity);}}
-                                            totalWidth={130}
-                                            totalHeight={30}
-                                            iconSize={15}
-                                            step={1}
-                                            valueType='real'
-                                            rounded
-                                            textColor='#B0228C'
-                                            iconStyle={{ color: 'white' }}
-                                            rightButtonBackgroundColor='#F7007C'
-                                            leftButtonBackgroundColor='#B1001D'/>
-                                {/* <NumInput item_code = {item.item_code} />             */}
+                                <NumInput id = {item.id} />            
                                 <CheckCircle key={item.id}  checked={false} addOrderItem={()=>this.addOrderItemEventHandler(item.id, 10 , item.unit_price)} />
-                                {/* <CheckCircle key={item.id}  checked={false} addOrderItem={()=>this.addOrderItemEventHandler(item.id, 10 , item.unit_price)}/> */}
-                            
-                                {/* <View> */}
-                                {/* <TouchableHighlight activeOpacity={0.6} underlayColor="#DDDDDD" onPress={this.handleClick({"id": item.item_code})} > */}
-                                {/* <TouchableHighlight activeOpacity={0.6} underlayColor="#DDDDDD" onPress={this.onChangeHandler} >
-                                <Icon disabled={true} name={'check-circle'} size={24} color={ this.state.checked ? Colors.GREEN :  Colors.LIGHTGRAY } checked={!this.checked} />
-                                </TouchableHighlight> */}
-                                {/* </View> */}
                             </TouchableOpacity>
                             <View style={styles.childHr}/>
                         </View>
