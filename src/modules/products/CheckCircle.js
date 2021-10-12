@@ -3,11 +3,16 @@ import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Pl
 import { Colors } from './Colors';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import NumericInput,{ calcSize } from 'react-native-numeric-input';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import Order from '../../models/order';
 import { useSelector, useDispatch } from 'react-redux';
+import OrderContext from '../../store/context/order';
+
 
 export default function CheckCircle(props){
+
+    const avlCart = useSelector(state => state.products.cart);
+    console.log("available cart is --------------------------------------------->>>", avlCart);
     const[isChecked, SetIsChecked] = useState(props.checked);
 
      const dispatch = useDispatch();
@@ -25,7 +30,7 @@ export default function CheckCircle(props){
     const amount = props.amount;
 
     const addToCart = (id) => {
-        console.log("dispatcher called add order to o_cart !!!");
+        console.log("dispatcher called add order to cart !!!");
         return { 
             type: ADD_TO_CART, 
             id: id,
@@ -44,11 +49,19 @@ export default function CheckCircle(props){
     //  if(isChecked)
         addToOrder();
   }
+  
+  const order = useContext(OrderContext);
+
   const addToOrder = useCallback(() => {
       console.log("in dispatcher add to order....");
       const d = dispatch(addToCart(id, code, name, type, rate, quantity));
-      console.log(d);
-      console.log(state.o_cart);
+      console.log("TROUBLESHOOTING");
+      
+      console.log("PRINTING ORDER CONTEXT ...", order);
+      // state.order.cart = d.cart;
+      // console.log(state.order.cart);
+      // console.log(d);
+      console.log(state.cart);
     //   console.log("in dispatcher add to order....");
     //   console.log(d);
     //   console.log("order dispatched ", state);

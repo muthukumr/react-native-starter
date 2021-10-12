@@ -184,7 +184,7 @@ export default function ProductsScreen({ isExtended, setIsExtended }) {
 
 const dispatch = useDispatch();
  
-  const resetHandler = useCallback(() => {
+  const resetHandler = useCallback(() => {  
     dispatch(resetCart());
     console.log(state.cart);
   }, [dispatch]);
@@ -194,7 +194,8 @@ const dispatch = useDispatch();
                   <View>
                     { this.renderAccordians() }
                   </View>
-                      <Button title = "Press me" onPress = {resetHandler}/>
+                      <Button style={styles.title} title = "Press me" onPress = {resetHandler}/>
+                      <Button style={styles.title} title = "VIEW CART" />
                   </View>
         );
 
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   text: {
     fontSize: 20,

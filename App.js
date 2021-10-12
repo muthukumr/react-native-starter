@@ -18,7 +18,10 @@ import {
   useQuery
 } from '@apollo/client';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Avatar, Input } from '@ui-kitten/components'
+import { ApplicationProvider, Avatar, Input } from '@ui-kitten/components';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 //import { QueryClient, QueryClientProvider } from "react-query";
 
 //import { gql } from '@apollo/client'
@@ -44,17 +47,43 @@ export const client = new ApolloClient({
   uri: 'https://87d7-27-5-241-41.ngrok.io/graphql-api',
 });
 
+const defaultGlobalState = {
+  num: 0,
+  text: "foo",
+  bool: false
+};
+const globalStateContext = React.createContext(defaultGlobalState);
+const dispatchStateContext = React.createContext(undefined);
 
+// https://www.basefactor.com/global-state-with-react
+const GlobalStateProvider = ({ children }) => {
+  const [state, dispatch] = React.useReducer(
+    (state, newValue) => ({ ...state, ...newValue }),
+    defaultGlobalState
+  );
+  return (
+    <globalStateContext.Provider value={state}>
+      <dispatchStateContext.Provider value={dispatch}>
+        {children}
+      </dispatchStateContext.Provider>
+    </globalStateContext.Provider>
+  );
+};
 
+const useGlobalState = () => [
+  React.useContext(globalStateContext),
+  React.useContext(dispatchStateContext)
+];
 
 
 export default function App() {
 //const listData1 = useQuery(GET_ALL_USERS);
 //console.log(listData1)
   return (
+    <GlobalStateProvider>
   <ApplicationProvider {...eva} theme={eva.light}>
     <ApolloProvider client={client}>
-    <Provider store={store}>
+    <Provider store={store} >
       <NavigationContainer>
         <PersistGate
           loading={
@@ -71,6 +100,7 @@ export default function App() {
     </Provider>
     </ApolloProvider>
     </ApplicationProvider>
+    </GlobalStateProvider>
   );
 }
 

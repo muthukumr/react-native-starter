@@ -3,9 +3,16 @@ import { TOGGLE_GREEN, ADD_VALUE_TO_STORE, ADD_TO_CART } from '../actions/produc
 import { RESET } from '../actions/products';
 import Product from '../../models/product';
 import Order from '../../models/order';
+// import OrderContext from '../context/order';
 
 //js object 
 const initialState = {
+    checkout: [],
+    cart: [],
+    order: []
+};
+
+const updatedState = {
     checkout: [],
     cart: [],
     order: []
@@ -28,46 +35,76 @@ const productsReducer = (state = initialState, action) => {
             console.log("existing index are ", existingIndex)
             console.log(state.cart[existingIndex]);
              if( existingIndex >= 0 ){
-                console.log("product already exists, updating the cart")
-                state.cart[existingIndex].quantity = action.quantity;
-                console.log(state.cart);
-                return (state);
+                console.log("UPDATE_PRODUCT")
+                const updatedProducts = [...state.cart];
+                updatedProducts[existingIndex].quantity = action.quantity;
+                
+                return{
+                  ...state, cart: updatedProducts
+                }
+
+                // state.cart[existingIndex].quantity = action.quantity;
+                // console.log(state.cart);
+                //added new
+                // initialState.cart = state.cart;
+                // return (initialState);
+                // return (state);
              } else {
-                const product = new Product(action.productId, action.quantity, action.amount); 
-                console.log("adding product to the cart");
-                state.cart.push(product);
-                console.log(state.cart);
-                return (state);
+                console.log("CREATE_PRODUCT");
+                const newProduct = new Product(action.productId, action.quantity, action.amount); 
+                // const updatedProducts = [...state.products];
+                // updatedProducts[existingIndex].quantity = action.quantity;
+                return{
+                  ...state, cart: state.cart.concat(newProduct)
+                }
+                // state.cart.push(product);
+                // console.log(state.cart);
+                // //added new
+                // initialState.cart = state.cart;
+                // return (initialState);
+                // return (state);
             }
         } else {
-            const product = new Product(action.productId, action.quantity, action.amount); 
-            console.log("adding product to the cart");
-            state.cart.push(product);
-            console.log(state.cart);
-            return (state);
+            console.log("CREATE_PRODUCT_1");
+            const newProduct = new Product(action.productId, action.quantity, action.amount); 
+            return{
+                  ...state, cart: state.cart.concat(newProduct)
+                }
+            // state.cart.push(product);
+            // console.log(state.cart);
+            // //added new
+            // initialState.cart = state.cart;
+            // return (initialState);
+            // return (state);
         }
         
     case ADD_VALUE_TO_STORE:
       console.log("adding value to store ", action.id, action.value);
     case ADD_TO_CART:
-        console.log("????????????????????????????????????");
+        // console.log("????????????????????????????????????");
 
-      console.log("adding order item to o_cart ...", action);
-      console.log(initialState);
+      console.log("adding order item to cart ...", action);
+    //   console.log(initialState);
       const existingIndex1 = state.cart.findIndex(product => product.id === action.id);
-            console.log("existing index are ", existingIndex1);
-            console.log(state.cart[existingIndex1]);
+            // console.log("existing index are ", existingIndex1);
+            // console.log(state.cart[existingIndex1]);
              if( existingIndex1 >= 0 ){
                 console.log("product already exists, updating the cart")
                 // state.cart[existingIndex1].quantity = action.quantity;
                 state.cart[existingIndex1].rate = 10;
                 state.cart[existingIndex1].amount = state.cart[existingIndex1].quantity * state.cart[existingIndex1].rate;
                 console.log("state.cart ---->> ", state.cart);
-                return (state);
+                //added new
+                initialState.cart = state.cart;
+                return (initialState);
+                // return (state);
              } else {
                  console.log("please select quantity and then add to cart...")
                  console.log("state.cart ---->> ", state.cart);
-                 return state;
+                 //added new
+                initialState.cart = state.cart;
+                return (initialState);
+                //  return state;
              }
 
     //   id, code, name, type, rate, quantity
